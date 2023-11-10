@@ -17,21 +17,17 @@ class GeocodingRepository {
   /// Method to search geocoding from keyword.
   Future<List<Location>> search(String name) async {
     final response = await _meteoClient.geocoding.search(count: 30, name: name);
-    final collection = response.results;
-    final locations = <Location>[];
-    for (final element in collection!) {
-      // locations.add(Location.fromJson(element.toJson()));
-      locations.add(
-        Location(
-          id: element.id,
-          name: element.name,
-          latitude: element.latitude,
-          longitude: element.longitude,
-          countryId: element.countryId,
-          country: element.country,
-        ),
-      );
-    }
+    final locations = response.results?.map((element) {
+          return Location(
+            id: element.id,
+            name: element.name,
+            latitude: element.latitude,
+            longitude: element.longitude,
+            countryId: element.countryId,
+            country: element.country,
+          );
+        }).toList() ??
+        List<Location>.empty();
 
     return locations;
   }
