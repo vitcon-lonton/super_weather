@@ -172,7 +172,6 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
 
 ## Screenshot 🌆
 
-![Screenshot](previews/ios.gif)
 ![Screenshot](previews/android.png)
 ![Screenshot](previews/macos.png)
 ![Screenshot](previews/web_1.png)
