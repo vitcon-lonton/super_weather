@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:super_weather/counter/counter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding_repository/geocoding_repository.dart';
 import 'package:super_weather/l10n/l10n.dart';
+import 'package:super_weather/theme/theme.dart';
+import 'package:super_weather/weather/weather.dart';
+import 'package:weather_repository/weather_repository.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (_) => WeatherRepository()),
+        RepositoryProvider(create: (_) => GeocodingRepository()),
+      ],
+      child: MultiBlocProvider(
+        providers: [BlocProvider(create: (_) => ThemeCubit())],
+        child: const AppView(),
       ),
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final primaryColor = context.select((ThemeCubit bloc) => bloc.state);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+          useMaterial3: true),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const WeatherPage(),
     );
   }
 }
