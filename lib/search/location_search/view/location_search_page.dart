@@ -70,7 +70,7 @@ class _SearchBarState extends State<_SearchBar> {
 }
 
 class _SearchResults extends StatelessWidget {
-  const _SearchResults({required this.items});
+  const _SearchResults(this.items);
 
   final List<Location> items;
 
@@ -82,14 +82,13 @@ class _SearchResults extends StatelessWidget {
 
     return ListView.builder(
       itemCount: items.length,
-      itemBuilder: (context, int index) =>
-          _SearchResultItem(item: items[index]),
+      itemBuilder: (_, int i) => _SearchResultItem(items[i]),
     );
   }
 }
 
 class _SearchResultItem extends StatelessWidget {
-  const _SearchResultItem({required this.item});
+  const _SearchResultItem(this.item);
 
   final Location item;
 
@@ -122,7 +121,7 @@ class _SearchBody extends StatelessWidget {
             empty: () => const Text('Please enter a term to begin'),
             loading: () => const CircularProgressIndicator(),
             failure: Text.new,
-            success: (items) => Expanded(child: _SearchResults(items: items)),
+            success: _SearchResults.new,
           ),
         );
       },
