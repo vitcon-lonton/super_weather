@@ -19,7 +19,8 @@ class WeatherPopulated extends StatelessWidget {
     return Stack(
       children: [
         _WeatherBackground(),
-        RefreshIndicator(
+        RefreshIndicator.adaptive(
+          color: Colors.white,
           onRefresh: onRefresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

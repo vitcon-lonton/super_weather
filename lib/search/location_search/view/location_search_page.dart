@@ -119,7 +119,7 @@ class _SearchBody extends StatelessWidget {
         return Center(
           child: state.when(
             empty: () => const Text('Please enter a term to begin'),
-            loading: () => const CircularProgressIndicator(),
+            loading: () => const CircularProgressIndicator.adaptive(),
             failure: Text.new,
             success: _SearchResults.new,
           ),
