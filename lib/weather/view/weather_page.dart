@@ -32,9 +32,22 @@ class _WeatherViewState extends State<WeatherView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Weather'),
-        actions: const [
-          WeatherUnitsToggleButton(),
-          SizedBox(width: 8),
+        actions: [
+          BlocBuilder<WeatherBloc, WeatherState>(
+            buildWhen: (prev, cur) {
+              return prev.temperatureUnits.isCelsius !=
+                  cur.temperatureUnits.isCelsius;
+            },
+            builder: (context, state) {
+              return WeatherUnitsToggleButton(
+                isCelsius: state.temperatureUnits.isCelsius,
+                onPressed: () {
+                  context.read<WeatherBloc>().add(WeatherEvent.unitsToggled());
+                },
+              );
+            },
+          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Center(
