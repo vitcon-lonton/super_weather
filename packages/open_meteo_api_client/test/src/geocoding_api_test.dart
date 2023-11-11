@@ -13,6 +13,7 @@ class FakeUri extends Fake implements Uri {}
 void main() {
   group('OpenGeocodingApi', () {
     late dio.Dio dioClient;
+    // ignore: unused_local_variable
     late GeocodingApi geocodingApi;
 
     setUpAll(() {

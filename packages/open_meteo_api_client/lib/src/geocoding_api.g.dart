@@ -24,15 +24,26 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'country_id': instance.countryId,
     };
 
-LocationSearch _$LocationSearchFromJson(Map<String, dynamic> json) =>
-    LocationSearch(
+SearchQuery _$SearchQueryFromJson(Map<String, dynamic> json) => SearchQuery(
+      json['name'] as String,
+      count: json['count'] as int? ?? 10,
+    )..language = json['language'] as String;
+
+Map<String, dynamic> _$SearchQueryToJson(SearchQuery instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'count': instance.count,
+      'language': instance.language,
+    };
+
+SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
           .toList(),
       generationTimeMs: (json['generationtime_ms'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$LocationSearchToJson(LocationSearch instance) =>
+Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
     <String, dynamic>{
       'results': instance.results,
       'generationtime_ms': instance.generationTimeMs,
@@ -57,21 +68,14 @@ class _GeocodingApi implements GeocodingApi {
   String? baseUrl;
 
   @override
-  Future<LocationSearch> search({
-    required String name,
-    String language = 'en',
-    int count = 10,
-  }) async {
+  Future<SearchResult> search(SearchQuery query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'name': name,
-      r'language': language,
-      r'count': count,
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query.toJson());
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<LocationSearch>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<SearchResult>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -87,7 +91,7 @@ class _GeocodingApi implements GeocodingApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = LocationSearch.fromJson(_result.data!);
+    final value = SearchResult.fromJson(_result.data!);
     return value;
   }
 

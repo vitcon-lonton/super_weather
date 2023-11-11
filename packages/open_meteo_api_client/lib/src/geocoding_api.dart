@@ -1,25 +1,28 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'geocoding_api.g.dart';
 
-@RestApi(baseUrl: 'https://geocoding-api.open-meteo.com/v1/')
-abstract class GeocodingApi {
-  factory GeocodingApi(
-    Dio dio, {
-    String baseUrl,
-  }) = _GeocodingApi;
+const _baseUrl = 'https://geocoding-api.open-meteo.com/v1/';
 
-  /// Finds a [Location] `/v1/search/?name=(query)?count=(count}`.
+@RestApi(baseUrl: _baseUrl)
+abstract class GeocodingApi {
+  factory GeocodingApi(Dio dio, {String baseUrl}) = _GeocodingApi;
+
+  factory GeocodingApi.initialize() => _GeocodingApi(Dio(), baseUrl: _baseUrl);
+
+  static String get baseUrl => _baseUrl;
+
+  // Future<LocationSearch> search({
+  //   @Query('name') required String name,
+  //   @Query('language') String language = 'en',
+  //   @Query('count') int count = 10,
+  // });
+
+  /// Finds a [Location] `/v1/search/?name=(query)?count=(count ?? 10}`.
   @GET('/search')
-  Future<LocationSearch> search({
-    @Query('name') required String name,
-    @Query('language') String language = 'en',
-    @Query('count') int count = 10,
-  });
+  Future<SearchResult> search(@Queries() SearchQuery query);
 }
 
 @JsonSerializable()
@@ -48,13 +51,28 @@ class Location {
 }
 
 @JsonSerializable()
-class LocationSearch {
-  const LocationSearch({this.results, this.generationTimeMs});
+class SearchQuery {
+  SearchQuery(
+    this.name, {
+    this.count = 10,
+  })  : assert(count > 1),
+        assert(count < 1000);
 
-  factory LocationSearch.fromJson(Map<String, dynamic> json) =>
-      _$LocationSearchFromJson(json);
+  final String name;
+  final int count;
+  String language = 'en';
 
-  Map<String, dynamic> toJson() => _$LocationSearchToJson(this);
+  Map<String, dynamic> toJson() => _$SearchQueryToJson(this);
+}
+
+@JsonSerializable()
+class SearchResult {
+  const SearchResult({this.results, this.generationTimeMs});
+
+  factory SearchResult.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchResultToJson(this);
 
   final List<Location>? results;
   @JsonKey(name: 'generationtime_ms')

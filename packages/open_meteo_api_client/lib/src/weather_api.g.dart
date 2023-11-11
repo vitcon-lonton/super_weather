@@ -6,6 +6,18 @@ part of 'weather_api.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+WeatherQuery _$WeatherQueryFromJson(Map<String, dynamic> json) => WeatherQuery(
+      (json['latitude'] as num).toDouble(),
+      (json['longitude'] as num).toDouble(),
+    )..current = json['current_weather'] as bool? ?? true;
+
+Map<String, dynamic> _$WeatherQueryToJson(WeatherQuery instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'current_weather': instance.current,
+    };
+
 Weather _$WeatherFromJson(Map<String, dynamic> json) => Weather(
       elevation: (json['elevation'] as num).toDouble(),
       latitude: (json['latitude'] as num).toDouble(),
@@ -25,14 +37,14 @@ Map<String, dynamic> _$WeatherToJson(Weather instance) => <String, dynamic>{
 
 CurrentWeather _$CurrentWeatherFromJson(Map<String, dynamic> json) =>
     CurrentWeather(
-      temperature: (json['temperature'] as num).toDouble(),
       weathercode: json['weathercode'] as int,
+      temperature: (json['temperature'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$CurrentWeatherToJson(CurrentWeather instance) =>
     <String, dynamic>{
-      'temperature': instance.temperature,
       'weathercode': instance.weathercode,
+      'temperature': instance.temperature,
     };
 
 // **************************************************************************
@@ -54,17 +66,10 @@ class _WeatherApi implements WeatherApi {
   String? baseUrl;
 
   @override
-  Future<Weather> getWeather({
-    required double lat,
-    required double long,
-    bool current = true,
-  }) async {
+  Future<Weather> getWeather(WeatherQuery query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'latitude': lat,
-      r'longitude': long,
-      r'current_weather': current,
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query.toJson());
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =

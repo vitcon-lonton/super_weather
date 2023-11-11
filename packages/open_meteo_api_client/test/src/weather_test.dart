@@ -27,4 +27,31 @@ void main() {
       });
     });
   });
+
+  group('WeatherQuery', () {
+    group('constructor', () {
+      test('current value is true', () {
+        expect(
+          WeatherQuery(41.85003, -87.65005),
+          isA<WeatherQuery>()
+              .having((w) => w.latitude, 'latitude', 41.85003)
+              .having((w) => w.longitude, 'longitude', -87.65005)
+              .having((w) => w.current, 'current', true),
+        );
+      });
+    });
+
+    group('toJson', () {
+      test('returns correct WeatherQuery object', () {
+        expect(
+          WeatherQuery(41.85003, -87.65005).toJson(),
+          {
+            'latitude': 41.85003,
+            'longitude': -87.65005,
+            'current_weather': true,
+          },
+        );
+      });
+    });
+  });
 }
