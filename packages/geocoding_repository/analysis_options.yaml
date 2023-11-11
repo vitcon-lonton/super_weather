@@ -13,3 +13,8 @@ analyzer:
     inference_failure_on_untyped_parameter: ignore
     inference_failure_on_instance_creation: ignore
     inference_failure_on_function_invocation: ignore
+  exclude:
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - '**.gr.dart'
+    - '**/generated_plugin_registrant.dart'
