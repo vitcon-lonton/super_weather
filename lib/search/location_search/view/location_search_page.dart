@@ -26,46 +26,18 @@ class LocationSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: _SearchBar()), body: _SearchBody());
-  }
-}
-
-class _SearchBar extends StatefulWidget {
-  @override
-  State<_SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<_SearchBar> {
-  final _textController = TextEditingController();
-
-  void _onClearTapped() {
-    _textController.text = '';
-    context
-        .read<LocationSearchBloc>()
-        .add(const LocationSearchEvent.textChanged(''));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _textController,
-      autocorrect: false,
-      onChanged: (value) => context
-          .read<LocationSearchBloc>()
-          .add(LocationSearchEvent.textChanged(value)),
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-            onPressed: _onClearTapped, icon: const Icon(Icons.clear)),
-        border: InputBorder.none,
-        hintText: 'Enter a search term',
+    return Scaffold(
+      appBar: AppBar(
+        title: LocationSearchInput(
+          onChanged: (value) {
+            context
+                .read<LocationSearchBloc>()
+                .add(LocationSearchEvent.textChanged(value));
+          },
+        ),
       ),
+      body: _SearchBody(),
     );
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
   }
 }
 
