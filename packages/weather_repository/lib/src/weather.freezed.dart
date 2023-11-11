@@ -24,7 +24,6 @@ mixin _$Weather {
   WeatherCondition get condition => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
-  String? get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,8 +39,7 @@ abstract class $WeatherCopyWith<$Res> {
       {double temperature,
       WeatherCondition condition,
       double latitude,
-      double longitude,
-      String? location});
+      double longitude});
 }
 
 /// @nodoc
@@ -61,7 +59,6 @@ class _$WeatherCopyWithImpl<$Res, $Val extends Weather>
     Object? condition = null,
     Object? latitude = null,
     Object? longitude = null,
-    Object? location = freezed,
   }) {
     return _then(_value.copyWith(
       temperature: null == temperature
@@ -80,10 +77,6 @@ class _$WeatherCopyWithImpl<$Res, $Val extends Weather>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -99,8 +92,7 @@ abstract class _$$WeatherImplCopyWith<$Res> implements $WeatherCopyWith<$Res> {
       {double temperature,
       WeatherCondition condition,
       double latitude,
-      double longitude,
-      String? location});
+      double longitude});
 }
 
 /// @nodoc
@@ -118,7 +110,6 @@ class __$$WeatherImplCopyWithImpl<$Res>
     Object? condition = null,
     Object? latitude = null,
     Object? longitude = null,
-    Object? location = freezed,
   }) {
     return _then(_$WeatherImpl(
       temperature: null == temperature
@@ -137,10 +128,6 @@ class __$$WeatherImplCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -152,8 +139,7 @@ class _$WeatherImpl implements _Weather {
       {required this.temperature,
       required this.condition,
       required this.latitude,
-      required this.longitude,
-      this.location});
+      required this.longitude});
 
   factory _$WeatherImpl.fromJson(Map<String, dynamic> json) =>
       _$$WeatherImplFromJson(json);
@@ -166,12 +152,10 @@ class _$WeatherImpl implements _Weather {
   final double latitude;
   @override
   final double longitude;
-  @override
-  final String? location;
 
   @override
   String toString() {
-    return 'Weather(temperature: $temperature, condition: $condition, latitude: $latitude, longitude: $longitude, location: $location)';
+    return 'Weather(temperature: $temperature, condition: $condition, latitude: $latitude, longitude: $longitude)';
   }
 
   @override
@@ -186,15 +170,13 @@ class _$WeatherImpl implements _Weather {
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
-            (identical(other.location, location) ||
-                other.location == location));
+                other.longitude == longitude));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, temperature, condition, latitude, longitude, location);
+  int get hashCode =>
+      Object.hash(runtimeType, temperature, condition, latitude, longitude);
 
   @JsonKey(ignore: true)
   @override
@@ -215,8 +197,7 @@ abstract class _Weather implements Weather {
       {required final double temperature,
       required final WeatherCondition condition,
       required final double latitude,
-      required final double longitude,
-      final String? location}) = _$WeatherImpl;
+      required final double longitude}) = _$WeatherImpl;
 
   factory _Weather.fromJson(Map<String, dynamic> json) = _$WeatherImpl.fromJson;
 
@@ -228,8 +209,6 @@ abstract class _Weather implements Weather {
   double get latitude;
   @override
   double get longitude;
-  @override
-  String? get location;
   @override
   @JsonKey(ignore: true)
   _$$WeatherImplCopyWith<_$WeatherImpl> get copyWith =>

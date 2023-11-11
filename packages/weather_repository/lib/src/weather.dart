@@ -19,7 +19,6 @@ class Weather with _$Weather {
     required WeatherCondition condition,
     required double latitude,
     required double longitude,
-    String? location,
   }) = _Weather;
 
   factory Weather.fromJson(Map<String, dynamic> json) =>

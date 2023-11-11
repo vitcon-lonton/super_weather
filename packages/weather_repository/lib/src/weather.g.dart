@@ -12,7 +12,6 @@ _$WeatherImpl _$$WeatherImplFromJson(Map<String, dynamic> json) =>
       condition: $enumDecode(_$WeatherConditionEnumMap, json['condition']),
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
-      location: json['location'] as String?,
     );
 
 Map<String, dynamic> _$$WeatherImplToJson(_$WeatherImpl instance) =>
@@ -21,7 +20,6 @@ Map<String, dynamic> _$$WeatherImplToJson(_$WeatherImpl instance) =>
       'condition': _$WeatherConditionEnumMap[instance.condition]!,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'location': instance.location,
     };
 
 const _$WeatherConditionEnumMap = {

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:open_meteo_api_client/open_meteo_api_client.dart' hide Weather;
+import 'package:open_meteo_api_client/open_meteo_api_client.dart' as meteo;
 import 'package:weather_repository/weather_repository.dart';
 
 /// {@template weather_repository}
@@ -8,25 +8,20 @@ import 'package:weather_repository/weather_repository.dart';
 class WeatherRepository {
   /// {@macro weather_repository}
   WeatherRepository({
-    OpenMeteoApiClient? openMeteoClient,
-  }) : _openMeteoClient = openMeteoClient ?? OpenMeteoApiClient();
+    meteo.WeatherApi? weatherApi,
+  }) : _weatherApi = weatherApi ?? meteo.WeatherApi.initialize();
 
-  final OpenMeteoApiClient _openMeteoClient;
+  // final open_meteo.OpenMeteoApiClient _openMeteoClient;
+  final meteo.WeatherApi _weatherApi;
 
   /// Method to get Weather from geocoding.
   Future<Weather> getWeather({
     required double latitude,
     required double longitude,
   }) async {
-    final response = await _openMeteoClient.weather
-        .getWeather(lat: latitude, long: longitude);
-
-    return Weather(
-      condition: response.currentWeather!.weathercode.toCondition,
-      temperature: response.currentWeather!.temperature,
-      latitude: response.latitude,
-      longitude: response.longitude,
-    );
+    final query = meteo.WeatherQuery(latitude, longitude);
+    final weather = await _weatherApi.getWeather(query);
+    return weather.toDomain();
   }
 }
 
@@ -68,5 +63,16 @@ extension on int {
       default:
         return WeatherCondition.unknown;
     }
+  }
+}
+
+extension on meteo.Weather {
+  Weather toDomain() {
+    return Weather(
+      condition: currentWeather!.weathercode.toCondition,
+      temperature: currentWeather!.temperature,
+      latitude: latitude,
+      longitude: longitude,
+    );
   }
 }
