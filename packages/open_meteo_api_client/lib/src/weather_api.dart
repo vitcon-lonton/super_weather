@@ -21,7 +21,7 @@ abstract class WeatherApi {
   //   @Query('current_weather') bool current = true,
   // });
 
-  /// Get [Weather] for a given [lat] and [long].
+  /// Get [Weather] for a given [query].
   @GET('/forecast')
   Future<Weather> getWeather(@Queries() WeatherQuery query);
 }

@@ -52,11 +52,9 @@ class Location {
 
 @JsonSerializable()
 class SearchQuery {
-  SearchQuery(
-    this.name, {
-    this.count = 10,
-  })  : assert(count > 1),
-        assert(count < 1000);
+  SearchQuery(this.name, {this.count = 10})
+      : assert(count < 1000, 'Must in range [1 - 1000]'),
+        assert(count > 1, 'Must in range [1 - 1000]');
 
   final String name;
   final int count;
