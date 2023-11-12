@@ -18,13 +18,13 @@ class GeocodingRepository {
   Future<List<Location>> search(String name) async {
     final query = meteo.SearchQuery(name, count: 30);
     final response = await _geocodingApi.search(query);
-    final locations = response.results?.map((e) => e.toDomain()).toList();
+    final locations = response.results?.map((e) => e.toRepo()).toList();
     return locations ?? List<Location>.empty();
   }
 }
 
-extension on meteo.Location {
-  Location toDomain() {
+extension MeteoLocationEx on meteo.Location {
+  Location toRepo() {
     return Location(
       id: id,
       name: name,
